@@ -6,15 +6,15 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd" >
 
     <bean id="person" class="com.luxoft.springioc.lab1.model.UsualPerson">
-        <property name="name" value="John Smith"/>
-        <property name="age" value="35"/>
-        <property name="country" ref="country"/>
+        <constructor-arg value="John Smith"/>
+        <constructor-arg value="35"/>
+        <constructor-arg ref="country"/>
     </bean>
 
     <bean id="country" class="com.luxoft.springioc.lab1.model.Country" autowire="byName">
-        <property name="id" value="1"/>
-        <property name="name" value="Russia"/>
-        <property name="codeName" value="RU"/>
+        <constructor-arg value="1"/>
+        <constructor-arg value="Russia"/>
+        <constructor-arg value="RU"/>
         <!--<property name="a" ref="a" />-->
     </bean>
 
