@@ -2,6 +2,8 @@ package com.luxoft.springioc.lab3.model;
 
 import java.util.List;
 
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,7 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 @Service("person")
-public class UsualPerson implements Person {
+public class UsualPerson implements Person, InitializingBean, DisposableBean {
 	
 	public static int createdPersons = 0; 
 
@@ -143,4 +145,13 @@ public class UsualPerson implements Person {
         return result;
     }
 
+    @Override
+    public void destroy() throws Exception {
+        createdPersons--;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        createdPersons++;
+    }
 }
