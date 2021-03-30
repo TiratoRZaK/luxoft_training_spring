@@ -3,16 +3,16 @@ package com.luxoft.springcore.objects;
 import com.luxoft.springcore.events.TravelEvent;
 import com.luxoft.springcore.travel.Connection;
 import com.luxoft.springcore.travel.TravellingOpportunities;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
 
-public class UsualPerson implements Person {
-    @Autowired
-    private TravellingOpportunities travellingOpportunities;
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
+public class UsualPerson implements Person, ApplicationContextAware {
+    private static ApplicationContext context;
 
     private int id;
 
@@ -80,13 +80,14 @@ public class UsualPerson implements Person {
     
     
     public void travel(City source, City destination) {
+        TravellingOpportunities travellingOpportunities = context.getBean(TravellingOpportunities.class);
         List<Connection> connections = travellingOpportunities.getConnections();
         Connection connection = connections.stream().filter(c ->
                 c.getSource().equals(source) && c.getDestination().equals(destination))
                 .findFirst().orElse(null);
         if(connection != null) {
             distanceTravelled += connection.getDistance();
-            applicationEventPublisher.publishEvent(new TravelEvent(this, destination));
+            context.publishEvent(new TravelEvent(this, destination));
         } else {
             throw new IllegalArgumentException("Connection not found");
         }
@@ -124,4 +125,8 @@ public class UsualPerson implements Person {
         return result;
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
+    }
 }
