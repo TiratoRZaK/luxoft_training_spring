@@ -1,6 +1,7 @@
 package com.luxoft.springdb.lab2;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.List;
 
@@ -56,6 +57,15 @@ public class CountryDaoImplTest {
 
 		countryDao.save(exampleCountry);
 		Country country = countryDao.getCountryByName("Australia");
+		assertEquals(exampleCountry, country);
+	}
+
+	@Test
+	@DirtiesContext
+	public void testGetCountryByCode() {
+
+		countryDao.save(exampleCountry);
+		Country country = countryDao.getCountryByCode("AU");
 		assertEquals(exampleCountry, country);
 	}
 
