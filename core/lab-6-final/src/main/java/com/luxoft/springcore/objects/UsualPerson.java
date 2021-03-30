@@ -1,6 +1,19 @@
 package com.luxoft.springcore.objects;
 
+import com.luxoft.springcore.events.TravelEvent;
+import com.luxoft.springcore.travel.Connection;
+import com.luxoft.springcore.travel.TravellingOpportunities;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+
+import java.util.List;
+
 public class UsualPerson implements Person {
+    @Autowired
+    private TravellingOpportunities travellingOpportunities;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
     private int id;
 
     private String name;
@@ -9,7 +22,7 @@ public class UsualPerson implements Person {
     
 	private int age;
 	private boolean isProgrammer;
-    
+
     public UsualPerson(String name, int age, City city) {
     	this.name = name;
     	this.age = age;
@@ -36,7 +49,7 @@ public class UsualPerson implements Person {
         return city;
     }
 
-    public void setCountry(City city) {
+    public void setCity(City city) {
         this.city = city;
     }
     
@@ -67,7 +80,16 @@ public class UsualPerson implements Person {
     
     
     public void travel(City source, City destination) {
-    	
+        List<Connection> connections = travellingOpportunities.getConnections();
+        Connection connection = connections.stream().filter(c ->
+                c.getSource().equals(source) && c.getDestination().equals(destination))
+                .findFirst().orElse(null);
+        if(connection != null) {
+            distanceTravelled += connection.getDistance();
+            applicationEventPublisher.publishEvent(new TravelEvent(this, destination));
+        } else {
+            throw new IllegalArgumentException("Connection not found");
+        }
     }
 
     public String toString() {

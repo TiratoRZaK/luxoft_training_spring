@@ -1,9 +1,12 @@
 package com.luxoft.springcore.events;
 
-public class TravelEventListener {
-	
-    public void arrivalToDestination(TravelEvent travelEvent) {
-    	
-    }
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
+@Component
+public class TravelEventListener {
+    @EventListener
+    public void arrivalToDestination(TravelEvent travelEvent) {
+        System.out.println(travelEvent.getPerson().getName() + " has arrived to " + travelEvent.getTravellingDestination());
+    }
 }
