@@ -10,13 +10,17 @@
 
 	<!-- Activates @Autowired -->
 	<context:annotation-config />
-<!-- 
-	<context:component-scan base-package="com.luxoft.springdb.lab2.model, com.luxoft.springdb.lab2.dao" />
- -->
-	
-	<jdbc:embedded-database id="dataSource">
-	</jdbc:embedded-database>
 
+	<context:component-scan base-package="com.luxoft.springdb.lab2.model, com.luxoft.springdb.lab2.dao" />
+
+	<jdbc:embedded-database id="dataSource"/>
+
+	<bean id="lcemf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="springframework.lab.orm.jpa"/>
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceProviderClass" value="org.hibernate.jpa.HibernatePersistenceProvider" />
+	</bean>
+	
 	<bean id="countryDao" class="com.luxoft.springdb.lab2.dao.jpa.CountryJpaDaoImpl" />
 
 </beans>
