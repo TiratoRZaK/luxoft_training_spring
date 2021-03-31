@@ -33,4 +33,6 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+	<bean id="programmaticTransactionCountryService" class="com.luxoft.springdb.lab3.service.ProgrammaticTransactionCountryServiceImpl" autowire="byType"/>
+
 </beans>
