@@ -8,12 +8,14 @@ import org.springframework.transaction.annotation.Propagation;
 
 import com.luxoft.springdb.lab3.dao.CountryDao;
 import com.luxoft.springdb.lab3.model.Country;
+import org.springframework.transaction.annotation.Transactional;
 
 //@Repository is more convenient declaration for such a class than general @Service
 @Repository
+@Transactional
 public class CountryServiceImpl implements CountryService {
 
-	
+
 	@Autowired
 	private CountryDao countryDao;
 
@@ -36,26 +38,32 @@ public class CountryServiceImpl implements CountryService {
 		}
 	}
 
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public List<Country> getAllCountriesRequired() {
 		return countryDao.getCountryList();
 	}
 
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public List<Country> getAllCountriesRequiresNew() {
 		return countryDao.getCountryList();
 	}
 
+	@Transactional(readOnly = false, propagation = Propagation.SUPPORTS)
 	public List<Country> getAllCountriesSupports() {
 		return countryDao.getCountryList();
 	}
 
+	@Transactional(readOnly = false, propagation = Propagation.NEVER)
 	public List<Country> getAllCountriesNever() {
 		return countryDao.getCountryList();
 	}
 
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	public List<Country> getAllCountriesMandatory() {
 		return countryDao.getCountryList();
 	}
 
+	@Transactional(readOnly = false, propagation = Propagation.NOT_SUPPORTED)
 	public List<Country> getAllCountriesNotSupported() {
 		return countryDao.getCountryList();
 	}
